@@ -6,7 +6,6 @@ class Blockchain {
 	}
 
 	addBlock(data) {
-
 		// lastBlock =  this.chain[this.chain.length-1]
 		const block = Block.mineBlock(this.chain[this.chain.length-1], data);
 		this.chain.push(block);
@@ -19,7 +18,7 @@ class Blockchain {
 		if(JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis())) return false;
 
 		for(let i =1 ; i<chain.length; i++) {
-			const block 	= chain[i];
+			const block 	  = chain[i];
 			const lastBlock = chain[i-1];
 
 			// checks whether lastHash of current block matches the hash value of previous block and checks whethere hashvalue of blockmatches  the block.hash

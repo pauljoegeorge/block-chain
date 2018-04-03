@@ -1,6 +1,6 @@
 const SHA256 = require('crypto-js/sha256');
 
-const DIFFICULTY = 4;
+const { DIFFICULTY } = require('../config');
 
 class Block {
 	constructor(timestamp, lastHash, hash, data, nonce) {
@@ -16,8 +16,8 @@ class Block {
 			Timestamp: ${this.timestamp}
 			LastHash : ${this.lastHash.substring(0,10)}
 			Hash     : ${this.hash.substring(0,10)}
-			Data     : ${this.data}
-			Nonce    : ${this.nonce}`
+			Nonce    : ${this.nonce}
+			Data     : ${this.data}`
 	}
 // Keyword static helps to call genesis method directly (Block.genesis())
 	static genesis() {
@@ -32,11 +32,11 @@ class Block {
 		do {
 			nonce++;
 			timestamp = Date.now();
-			hash      = Block.hash(timestamp, lastHash, data, nonce)
+			hash      = Block.hash(timestamp, lastHash, data, nonce);
 
 		}while(hash.substring(0, DIFFICULTY) !== '0'.repeat(DIFFICULTY));	//until generate hash is started by 4 0's iterate the nonce value and hash
 
-		return new this(timestamp, lastHash, hash, data);
+		return new this(timestamp, lastHash, hash, data, nonce);
 	}
 
 	static hash(timestamp, lastBlock, data, nonce){

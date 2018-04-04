@@ -1,5 +1,5 @@
 const Block        = require('./block');
-const {DIFFICULTY} = require('../config'); 
+// const {DIFFICULTY} = require('../config'); 
 
 describe('Block', () => {
 	let data, lastBlock, block;
@@ -20,6 +20,7 @@ describe('Block', () => {
 
 	it('should generate a hash starting withs zeros equal to DIFFICULTY', () => {
 		expect(block.hash.substring(0, block.difficulty)).toEqual('0'.repeat(block.difficulty));
+		// console.log(block.toString());
 	});
 
 	it('reduces the mine_rate by 1 as the current_time exceeded the mine_rate', () => {

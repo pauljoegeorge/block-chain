@@ -30,7 +30,7 @@ class Block {
 		let   timestamp, hash
 		const lastHash    = lastBlock.hash;
 		let   nonce       = 0;
-		let { difficulty }  = lastBlock;
+		let { difficulty }  = lastBlock;  //is a destructor 
 		
 		do {
 			nonce++;

@@ -1,5 +1,5 @@
 const Block        = require('./block');
-const {DIFFICULTY} = require('../config'); 
+// const {DIFFICULTY} = require('../config'); 
 
 describe('Block', () => {
 	let data, lastBlock, block;
@@ -19,7 +19,16 @@ describe('Block', () => {
 	});
 
 	it('should generate a hash starting withs zeros equal to DIFFICULTY', () => {
-		expect(block.hash.substring(0, DIFFICULTY)).toEqual('0'.repeat(DIFFICULTY));
-		console.log(block.toString());
+		expect(block.hash.substring(0, block.difficulty)).toEqual('0'.repeat(block.difficulty));
+		// console.log(block.toString());
+	});
+
+	it('reduces the mine_rate by 1 as the current_time exceeded the mine_rate', () => {
+		// if current_time is more than than the expected limit -> redice by 1
+		expect(Block.adjustDifficulty(block, block.timestamp+3600000)).toEqual(block.difficulty-1);
+	});
+
+	it('increase the mine_rate by 1 as the current_time is greater than the limit', () => {
+		expect(Block.adjustDifficulty(block, block.timestamp+1)).toEqual(block.difficulty + 1);
 	});
 });

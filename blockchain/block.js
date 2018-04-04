@@ -30,13 +30,13 @@ class Block {
 		let   timestamp, hash
 		const lastHash    = lastBlock.hash;
 		let   nonce       = 0;
-		let {difficulty}  = lastBlock;
+		let { difficulty }  = lastBlock;
 		
 		do {
 			nonce++;
 			timestamp  = Date.now();
 			difficulty = Block.adjustDifficulty(lastBlock, timestamp); // pass lastblock to find the timestamp of lastblock 
-			hash       = Block.hash(timestamp, lastHash, data, nonce);
+			hash       = Block.hash(timestamp, lastHash, data, nonce, difficulty);
 
 		}while(hash.substring(0, difficulty) !== '0'.repeat(difficulty));	//until generate hash is started by 4 0's iterate the nonce value and hash
 
@@ -56,7 +56,7 @@ class Block {
 	static adjustDifficulty(lastBlock, currentTime) {
 		let {difficulty} = lastBlock;
 		// checks whether previous time + mine_rate > current_time   if YES  mine_rate has to be increased 
-		difficulty = lastBlock.timestamp + MINE_RATE > currentTime ? difficulty +1 : difficulty -1; 
+		difficulty = lastBlock.timestamp + MINE_RATE > currentTime ? (difficulty + 1) : (difficulty - 1); 
 		return difficulty;
 	}
 }

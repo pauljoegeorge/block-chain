@@ -7,14 +7,20 @@
 
 // console.log(new_block.toString());
 
+// -------------FOR TESTING PROOF OF WORK ----------//
+// const Blockchain = require('./blockchain');
+// const bc = new Blockchain();
 
-const Blockchain = require('./blockchain');
-const bc = new Blockchain();
+// for (let i =0; i<10; i++) {
+// 	console.log(bc.addBlock(`foo ${i}`).toString());  //test code to add 10 blocks and  to examine the value of difficulty
+// }
 
-for (let i =0; i<10; i++) {
-	console.log(bc.addBlock(`foo ${i}`).toString());  //test code to add 10 blocks and  to examine the value of difficulty
-}
 
+//-------- FOR TESTING WALLET----------------//
+
+const Wallet = require('./wallet');
+const wallet = new Wallet();
+console.log(wallet.toString());
 
 
 // npm run dev-test

@@ -14,6 +14,10 @@ class Wallet {
 			PublicKey : ${this.publicKey}`
 	}
 
+	sign(dataHash){
+		return this.keyPair.sign(dataHash)   // .sign is an inbult function -> dataHash is details of tarnsaction
+	}
+
 }
 
 module.exports = Wallet;

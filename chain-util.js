@@ -1,3 +1,4 @@
+const SHA256 = require('crypto-js/sha256'); // to generate hash value
 const EC     = require('elliptic').ec;   // is used to generate keyPair
 const uuidV1 = require('uuid/v1');       // for generating a unique id for transaction.
 
@@ -11,6 +12,14 @@ class ChainUtil {
 
 	static id() {
 		return uuidV1();   //returns the unique id
+	}
+
+	static hash(data){
+		return SHA256(JSON.stringify(data)).toString();  // generate hash 
+	}
+
+	static verifySignature(publicKey, signature, dataHash){
+		return ec.keyFromPublic(publicKey, 'hex').verify(dataHash, signature)//inbuilt method to decrypt the publickey and verify the output and return true or false
 	}
 
 }

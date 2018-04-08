@@ -1,7 +1,6 @@
 const Transaction = require('./transaction');
 const Wallet      = require('./index');
 
-
 describe('Transaction', () => {
 	let transaction, wallet, recipient, amount;
 
@@ -21,6 +20,19 @@ describe('Transaction', () => {
 		// console.log(transaction.outputs)
 	});
 
+	it('checks whether wallet balance is same as transaction input balance', ()=> {
+		expect(transaction.input.amount).toEqual(wallet.balance)
+	})
+
+	it('validates the valid transaction', () => {
+		expect(Transaction.verifyTransaction(transaction)).toBe(true);
+	})
+
+	it('invalidates a corrupt transaction', () => {
+		transaction.outputs[0].amount = 50000;  // users minimum balance is lesser than 5000 , so this condition is false
+		expect(Transaction.verifyTransaction(transaction)).toBe(false);
+	});
+
 
 	describe('transacting with an amount more than the minimum balance' , () => {
 		beforeEach(() => {
@@ -31,6 +43,24 @@ describe('Transaction', () => {
 		it('doesnot create the transaction', ()=> {
 			expect(transaction).toEqual(undefined);
 		});
+	})
+
+	describe('and update the transaction', () => {
+		let nextAmount, nextRecipient;
+
+		beforeEach(()=> {
+			nextAmount = 20;
+			nextRecipient = 'abc-d45shtuv'
+			transaction.update(wallet, nextRecipient, nextAmount);
+		});
+
+		it('subtracts the new amount from the current senderBalance', () =>{
+			expect(transaction.outputs.find(output => output.address === wallet.publicKey).amount).toEqual(wallet.balance - amount - nextAmount )
+		});
+
+		it('adds amount to recipients wallet', () =>{
+			expect(transaction.outputs.find(output => output.address === nextRecipient).amount).toEqual(nextAmount);
+		})
 	})
 
 });

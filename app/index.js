@@ -42,6 +42,11 @@ app.post('/transact', (req, res) => {
 	res.redirect('/transactions');
 });
 
+//To share the public key
+app.get('/public-key', (req, res) => {
+	res.json({PublicKey: wallet.publicKey});
+})
+
 app.listen(HTTP_PORT, () => console.log(`listening to port ${HTTP_PORT}`));
 p2pServer.listen();
 

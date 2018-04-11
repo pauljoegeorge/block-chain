@@ -15,7 +15,7 @@ class Transaction {
 		}
 
 		senderOutput.amount = senderOutput.amount - amount; // update the senderWallet balance by subtracting the amount;
-		this.outputs.push({amount, address: recepient});  // amount and address of receiver
+		this.outputs.push({ amount, address: recepient });  // amount and address of receiver
 		Transaction.signTransaction(this, senderWallet); //once above things are successfully done, sign the transaction
 		
 		return this;

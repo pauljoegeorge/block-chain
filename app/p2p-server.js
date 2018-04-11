@@ -6,7 +6,7 @@ const peers	    = process.env.PEERS ? process.env.PEERS.split(',') : [];
 const MESSAGE_TYPES = {
 	chain: 'CHAIN',
 	transaction: 'TRANSACTION'
-}
+};
 
 class P2pServer {
 	constructor(blokchain, transactionPool){
@@ -16,7 +16,7 @@ class P2pServer {
 	}
 
 	listen(){
-		const server = new WebSocket.Server({port: P2P_PORT});
+		const server = new WebSocket.Server({ port: P2P_PORT });
 		server.on('connection', socket => this.connectSocket(socket));
 
 		this.connectToPeers();
@@ -37,30 +37,8 @@ class P2pServer {
 		//for sending and receiving the message
 		this.messageHandler(socket);	
 
-		this.sendChain(socket)
+		this.sendChain(socket);
 		
-	}
-
-	sendChain(socket){
-		socket.send(JSON.stringify({
-			type: MESSAGE_TYPES.chain,
-			chain: this.blockchain.chain
-		}));	//the one who created block will send the data and 
-															//it can be received by everyone using "socket.on"
-	}
-	sendTransaction(socket, transaction){
-		socket.send(JSON.stringify({
-			type: MESSAGE_TYPES.transaction,
-			transaction
-		}));
-	}
-
-	syncChains() {
-		this.sockets.forEach(socket => this.sendChain(socket));  //will access each connected socket and replace with new valid chain
-	}
-
-	broadcastTransaction(transaction){  //broadcast each transaction to all the sockets connected (same as synChain)
-		this.sockets.forEach(socket => this.sendTransaction(socket, transaction));
 	}
 
 	messageHandler(socket) {
@@ -79,6 +57,31 @@ class P2pServer {
 			// this.blockchain.replaceChain(data);
 		});
 	}
+
+	sendChain(socket){
+		socket.send(JSON.stringify({
+			type: MESSAGE_TYPES.chain,
+			chain: this.blockchain.chain
+		}));	//the one who created block will send the data and 
+															//it can be received by everyone using "socket.on"
+	}
+
+	sendTransaction(socket, transaction){
+		socket.send(JSON.stringify({
+			type: MESSAGE_TYPES.transaction,
+			transaction
+		}));
+	}
+
+
+	syncChains() {
+		this.sockets.forEach(socket => this.sendChain(socket));  //will access each connected socket and replace with new valid chain
+	}
+
+	broadcastTransaction(transaction){  //broadcast each transaction to all the sockets connected (same as synChain)
+		this.sockets.forEach(socket => this.sendTransaction(socket, transaction));
+	}
+
 } 
 
 module.exports = P2pServer;
